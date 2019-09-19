@@ -13,55 +13,43 @@ import Image from 'react-bootstrap/Image';
 interface Props {}
 
 interface State{
-
     infot : any[],
     tiedotLadattu : boolean
 }
 
+function useData() {
+  const [data, setData] = useState<State>({
+    infot : [],
+    tiedotLadattu : false
+  });
+
+  async function haeTiedot(ean: any) {
+    try{
+      let res = await fetch(`localhost:3001/product/${ean}`);
+      let infot = await res.json();
+      console.log(infot);
+      setData({
+            ...data,
+            infot : infot,
+            tiedotLadattu : true
+      });
+    }catch (err){
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    console.log('moi :)')
+  }, []);
+
+  return { data, haeTiedot }
+}
+
 const App : React.FC<Props> = () => {
 
-    const [data, setData] = useState<State>({
-        infot : [],
-        tiedotLadattu : false
-    });
-
-    useEffect(() => {
-
-        async function haeTiedot(){
-    
-          try{
-
-          let res = await fetch("URLTÄHÄ bROs");
-    
-          let infot = await res.json();
-    
-          console.log(infot);
-    
-          setData({
-                ...data,
-                infot : infot,
-                tiedotLadattu : true
-          });
-    
-          }catch (err){
-    
-            setData({
-              ...data,
-              tiedotLadattu : false
-        });
-    
-      }
-    
-        };
-    
-        haeTiedot(); //Tää vittuu sit bro mut toimii tällee et hakee jo dataa
-    
-        
-    
-        console.log("Valmis");
-      }, []);
-
-        return (
+  const hook = useData();
+  
+  return (
             <Container>
             <Otsikko teksti="Pricesite"/>
             <Card style={{ width: '40rem' }}>
@@ -79,11 +67,11 @@ const App : React.FC<Props> = () => {
 
 
 
-            {(data.tiedotLadattu === false) ? <Spinner animation="border" className="mt-2" role="status">
+            {(hook.data.tiedotLadattu === false) ? <Spinner animation="border" className="mt-2" role="status">
             <span className="sr-only">Ladataan...</span>
             </Spinner> :
             <ListGroup>
-            {data.infot.map((info, idx) => {
+            {hook.data.infot.map((info, idx) => {
             return (<ListGroup.Item key={idx}>{info.otsikko}</ListGroup.Item>)
             })};
             </ListGroup>}

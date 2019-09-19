@@ -10,7 +10,7 @@ interface Props {
                 children? : any
 }
 
-const Ostoslista : React.FC<Props> = (props : Props) => {
+const Tuotelista : React.FC<Props> = (props : Props) => {
   const { haeTiedot } = useContext(ProductContext)
 
   function handleSubmit(e: any) {
@@ -37,4 +37,4 @@ const Ostoslista : React.FC<Props> = (props : Props) => {
     )
 }
 
-export default Ostoslista;
+export default Tuotelista;

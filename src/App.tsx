@@ -52,10 +52,15 @@ const App : React.FC<Props> = () => {
             <Otsikko teksti="Pricesite"/>
             <Tuotekortti />
             
+
+            {(hook.data.tiedotLadattu === false) ? <Spinner animation="border" className="mt-2" role="status">
+             <span className="sr-only">Ladataan...</span>
+            </Spinner> :
             <ListGroup>
             
-            </ListGroup>
+            </ListGroup>}
             </ProductProvider>
+            
             </Container>
         )
 }

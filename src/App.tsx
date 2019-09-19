@@ -7,13 +7,14 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Image from 'react-bootstrap/Image';
+import { ProductProvider } from './components/ProductContext';
+// import Image from 'react-bootstrap/Image';
 
 
 interface Props {}
 
 interface State{
-    infot : any[],
+    infot : any,
     tiedotLadattu : boolean
 }
 
@@ -23,23 +24,19 @@ function useData() {
     tiedotLadattu : false
   });
 
-  async function haeTiedot(ean: any) {
-    try{
-      let res = await fetch(`localhost:3001/product/${ean}`);
-      let infot = await res.json();
-      console.log(infot);
-      setData({
-            ...data,
-            infot : infot,
-            tiedotLadattu : true
-      });
-    }catch (err){
-      console.log(err);
-    }
+  async function haeTiedot() {
+    let res = await fetch(`http://localhost:3001/product/0`);
+    let infot = await res.json();
+    console.log(infot);
+    setData({
+      ...data,
+      infot : infot,
+      tiedotLadattu : true
+    });
   };
 
   useEffect(() => {
-    console.log('moi :)')
+    haeTiedot();
   }, []);
 
   return { data, haeTiedot }
@@ -51,33 +48,20 @@ const App : React.FC<Props> = () => {
   
   return (
             <Container>
+            <ProductProvider value={hook}>
             <Otsikko teksti="Pricesite"/>
-            <Card style={{ width: '40rem' }}>
-            <Card.Body>
-
-            <Card.Title>Etsi tuote</Card.Title>
-
-            <Form.Group controlId="exampleForm.ControlSelect1">
-            <Form.Control type="string" name="EAN" placeholder="Syötä EAN..." />
-            </Form.Group>
-
-            <Button variant="outline-dark" size="lg" block>Etsi</Button>
-            </Card.Body>
-            </Card>
-
-
-
-            {(hook.data.tiedotLadattu === false) ? <Spinner animation="border" className="mt-2" role="status">
-            <span className="sr-only">Ladataan...</span>
-            </Spinner> :
+            <Tuotekortti />
+            
             <ListGroup>
-            {hook.data.infot.map((info, idx) => {
-            return (<ListGroup.Item key={idx}>{info.otsikko}</ListGroup.Item>)
-            })};
-            </ListGroup>}
-
+            
+            </ListGroup>
+            </ProductProvider>
             </Container>
         )
 }
+
+// {(hook.data.tiedotLadattu === false) ? <Spinner animation="border" className="mt-2" role="status">
+// <span className="sr-only">Ladataan...</span>
+// </Spinner> :
 
 export default App;

@@ -7,11 +7,15 @@ import { ProductContext } from './ProductContext';
 
 
 interface Props {
-                children? : any
+                children? : any,
+                paivita? : (event : any) => void,
 }
 
 const Tuotelista : React.FC<Props> = (props : Props) => {
+
   const { haeTiedot } = useContext(ProductContext)
+
+  
 
   function handleSubmit(e: any) {
     e.preventDefault();
@@ -27,7 +31,7 @@ const Tuotelista : React.FC<Props> = (props : Props) => {
             <Card.Body>
               <Card.Title>Etsi tuote</Card.Title>
               <Form.Group controlId="exampleForm.ControlSelect1">
-                <Form.Control type="string" name="EAN" placeholder="Syötä EAN..." />
+                <Form.Control onChange={props.paivita} type="string" name="EAN" placeholder="Syötä EAN..." />
               </Form.Group>
             <Button variant="outline-dark" size="lg" block type="submit">Etsi</Button>
           </Card.Body>

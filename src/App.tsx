@@ -9,12 +9,12 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { ProductProvider } from './components/ProductContext';
 // import Image from 'react-bootstrap/Image';
-
+// <Card.Img variant="top" src={info.kuvan_url} width="200px" height="400px" /> Pitäisikö lisätä bäkkäriin kanssa kuva?
 
 interface Props {}
 
 interface State{
-    infot : any,
+    infot : any[],
     tiedotLadattu : boolean
 }
 
@@ -25,7 +25,9 @@ function useData() {
   });
 
   async function haeTiedot() {
-    let res = await fetch(`http://localhost:3001/product/0`);
+      
+    let ean = 8801643644796; //Tähän vaan jotenkin event.target.valuen arvo ja on ez
+    let res = await fetch(`http://localhost:3001/api/product/${ean}`); //8801643644796
     let infot = await res.json();
     console.log(infot);
     setData({
@@ -44,20 +46,49 @@ function useData() {
 
 const App : React.FC<Props> = () => {
 
+  const [uusiEAN, setUusiEAN] = useState<string>("");
+
+  const paivitaEAN = (event : any) : void=> {
+
+    setUusiEAN(event.target.value);
+  
+    console.log(event.target.value)
+    
+  }  
+
   const hook = useData();
   
   return (
             <Container>
             <ProductProvider value={hook}>
             <Otsikko teksti="Pricesite"/>
-            <Tuotekortti />
+            <Tuotekortti paivita={paivitaEAN} />
             
+            <h5>EAN : {uusiEAN}</h5>
 
             {(hook.data.tiedotLadattu === false) ? <Spinner animation="border" className="mt-2" role="status">
              <span className="sr-only">Ladataan...</span>
             </Spinner> :
             <ListGroup>
             
+            {hook.data.infot.map((info, idx) => {
+              return (
+
+                <Card key={idx} style={{ width: '18rem'}}>
+                <Card.Body>
+                <Card.Title>{info.name}</Card.Title>
+                <Card.Text>
+                <p>Linkki: {info.link}</p>
+                <p>Nimi: {info.name}</p>
+                <p>Hinta: {info.price}€</p>
+                </Card.Text>
+                </Card.Body>
+                <Button variant="primary">Täydet tiedot</Button>
+                </Card>
+              
+                )
+              })}
+
             </ListGroup>}
             </ProductProvider>
             

@@ -14,11 +14,18 @@ interface Props {
 const Tuotelista : React.FC<Props> = (props : Props) => {
 
   const { haeTiedot } = useContext(ProductContext)
+<<<<<<< HEAD
 
   
 
+=======
+  // functio joka hoitaan tiedon hakemisen palvelimelta kun nappia painetaan
+>>>>>>> acc71b37e9821841063f3cdd39c922af879102ce
   function handleSubmit(e: any) {
+    // estetään sivun uudelleen lataaminen
     e.preventDefault();
+    // kutsutaan functio joka hakee tiedot palvelimelta ja tallentaa ne provideriin
+    // TODO: formista pitää saada EAN/hakutermi functiolle parametriksi
     haeTiedot();
   }
 

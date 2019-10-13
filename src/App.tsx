@@ -17,17 +17,23 @@ interface State{
     infot : any[],
     tiedotLadattu : boolean
 }
-
+// custom hook
 function useData() {
   const [data, setData] = useState<State>({
     infot : [],
     tiedotLadattu : false
   });
+<<<<<<< HEAD
 
   async function haeTiedot() {
       
     let ean = 8801643644796; //Tähän vaan jotenkin event.target.valuen arvo ja on ez
     let res = await fetch(`http://localhost:3001/api/product/${ean}`); //8801643644796
+=======
+  // functio joka hakee tiedot palvelimelta
+  async function haeTiedot(hakuTermi: any) {
+    let res = await fetch(`http://localhost:3001/product/${hakuTermi}`);
+>>>>>>> acc71b37e9821841063f3cdd39c922af879102ce
     let infot = await res.json();
     console.log(infot);
     setData({
@@ -36,11 +42,10 @@ function useData() {
       tiedotLadattu : true
     });
   };
-
   useEffect(() => {
-    haeTiedot();
+    haeTiedot(0);
   }, []);
-
+  // palautetaan palvelimen antama Data ja functio, jolla voi hakea dataa
   return { data, haeTiedot }
 }
 
@@ -57,7 +62,7 @@ const App : React.FC<Props> = () => {
   }  
 
   const hook = useData();
-  
+  // ProductProvider vie hookin antamat tiedot ylemmälle tasolle
   return (
             <Container>
             <ProductProvider value={hook}>
@@ -95,9 +100,5 @@ const App : React.FC<Props> = () => {
             </Container>
         )
 }
-
-// {(hook.data.tiedotLadattu === false) ? <Spinner animation="border" className="mt-2" role="status">
-// <span className="sr-only">Ladataan...</span>
-// </Spinner> :
 
 export default App;

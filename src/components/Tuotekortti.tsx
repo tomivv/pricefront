@@ -9,24 +9,22 @@ import { ProductContext } from './ProductContext';
 interface Props {
                 children? : any,
                 paivita? : (event : any) => void,
+                e? : any,
 }
 
 const Tuotelista : React.FC<Props> = (props : Props) => {
 
+  const [ean, setEan] = useState<any>('');
+
   const { haeTiedot } = useContext(ProductContext)
-<<<<<<< HEAD
-
-  
-
-=======
   // functio joka hoitaan tiedon hakemisen palvelimelta kun nappia painetaan
->>>>>>> acc71b37e9821841063f3cdd39c922af879102ce
   function handleSubmit(e: any) {
     // estetään sivun uudelleen lataaminen
     e.preventDefault();
     // kutsutaan functio joka hakee tiedot palvelimelta ja tallentaa ne provideriin
     // TODO: formista pitää saada EAN/hakutermi functiolle parametriksi
-    haeTiedot();
+    haeTiedot(ean);
+    setEan('');
   }
 
     const [nayta, setNayta] = useState<boolean>(true);
@@ -38,7 +36,7 @@ const Tuotelista : React.FC<Props> = (props : Props) => {
             <Card.Body>
               <Card.Title>Etsi tuote</Card.Title>
               <Form.Group controlId="exampleForm.ControlSelect1">
-                <Form.Control onChange={props.paivita} type="string" name="EAN" placeholder="Syötä EAN..." />
+                <Form.Control value={ean} onChange={(e: any) => setEan(e.target.value)} type="string" name="EAN" placeholder="Syötä EAN..." />
               </Form.Group>
             <Button variant="outline-dark" size="lg" block type="submit">Etsi</Button>
           </Card.Body>

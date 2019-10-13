@@ -6,7 +6,6 @@ import Spinner from 'react-bootstrap/Spinner';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import { ProductProvider } from './components/ProductContext';
 // import Image from 'react-bootstrap/Image';
 // <Card.Img variant="top" src={info.kuvan_url} width="200px" height="400px" /> Pitäisikö lisätä bäkkäriin kanssa kuva?
@@ -35,7 +34,6 @@ function useData() {
     });
   };
   useEffect(() => {
-    console.log('asd')
   }, []);
   // palautetaan palvelimen antama Data ja functio, jolla voi hakea dataa
   return { data, haeTiedot }

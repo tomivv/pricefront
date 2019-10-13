@@ -2,7 +2,6 @@ import React, {useState, useContext} from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Image from 'react-bootstrap/Image';
 import { ProductContext } from './ProductContext';
 
 
@@ -26,8 +25,6 @@ const Tuotelista : React.FC<Props> = (props : Props) => {
     haeTiedot(ean);
     setEan('');
   }
-
-    const [nayta, setNayta] = useState<boolean>(true);
 
     return (
       <>

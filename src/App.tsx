@@ -8,13 +8,17 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { ProductProvider } from './components/ProductContext';
 // import Image from 'react-bootstrap/Image';
-// <Card.Img variant="top" src={info.kuvan_url} width="200px" height="400px" /> Pitäisikö lisätä bäkkäriin kanssa kuva?
+
 
 interface Props {}
 
+interface Spinner1{
+  loading : boolean
+}
+
 interface State{
     infot : any[],
-    tiedotLadattu : boolean
+    tiedotLadattu? : boolean
 }
 // custom hook
 function useData() {
@@ -23,20 +27,25 @@ function useData() {
     tiedotLadattu : false
   });
 
+  const [spinner, setSpinner] = useState<Spinner1>({loading : false});
+
+  
   async function haeTiedot(SearchTerm: any) {
+    setSpinner({loading : true});
     let res = await fetch(`http://localhost:3001/api/product/${SearchTerm}`);
     let infot = await res.json();
     console.log(infot)
     setData({
       ...data,
       infot : infot,
-      tiedotLadattu : true
+      tiedotLadattu : true,
     });
+    setSpinner({loading : false});
   };
   useEffect(() => {
   }, []);
   // palautetaan palvelimen antama Data ja functio, jolla voi hakea dataa
-  return { data, haeTiedot }
+  return { data, haeTiedot, spinner }
 }
 
 const App : React.FC<Props> = () => {
@@ -47,7 +56,7 @@ const App : React.FC<Props> = () => {
             <ProductProvider value={hook}>
             <Otsikko teksti="Pricesite"/>
             <Tuotekortti />
-            {(hook.data.tiedotLadattu === false) ? <Spinner animation="border" className="mt-2" role="status">
+            {(hook.spinner.loading === true) ? <Spinner animation="border" className="mt-3" role="status">
              <span className="sr-only">Ladataan...</span>
             </Spinner> :
             <ListGroup>
@@ -58,7 +67,7 @@ const App : React.FC<Props> = () => {
                   <Card.Body>
                     <Card.Title>{info.name}</Card.Title>
                     <Card.Text>
-                      Linkki: {info.link}
+                      Linkki: <a href={info.link}>{info.link}</a>
                     </Card.Text>
                     <Card.Text>
                       Nimi: {info.name}

@@ -35,12 +35,16 @@ function useData() {
     let res = await fetch(`http://localhost:3001/api/product/${SearchTerm}`);
     let infot = await res.json();
     console.log(infot)
-    setData({
-      ...data,
-      infot : infot,
-      tiedotLadattu : true,
-    });
-    setSpinner({loading : false});
+    if (infot.failed) {
+      setSpinner({loading : false});
+    } else {
+      setData({
+        ...data,
+        infot : infot,
+        tiedotLadattu : true,
+      });
+      setSpinner({loading : false});
+    }
   };
   useEffect(() => {
   }, []);

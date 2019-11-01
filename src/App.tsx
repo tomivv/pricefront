@@ -2,12 +2,11 @@ import React, {useEffect, useState} from 'react';
 import Otsikko from './components/Otsikko';
 import Tuotekortti from "./components/Tuotekortti";
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
 import { ProductProvider } from './components/ProductContext';
-// import Image from 'react-bootstrap/Image';
+import Product from './components/Product';
 
 
 interface Props {}
@@ -56,39 +55,29 @@ const App : React.FC<Props> = () => {
   const hook = useData();
   // ProductProvider vie hookin antamat tiedot ylemmälle tasolle
   return (
-            <Container>
-            <ProductProvider value={hook}>
-            <Otsikko teksti="Pricesite"/>
+    <Container>
+      <ProductProvider value={hook}>
+        <Otsikko teksti="Pricesite"/>
+        <Row>
+          <Col lg={{ span: 6, offset: 3 }} md={{ span: 12, offset: 0}}>
             <Tuotekortti />
-            {(hook.spinner.loading === true) ? <Spinner animation="border" className="mt-3" role="status">
-             <span className="sr-only">Ladataan...</span>
-            </Spinner> :
-            <ListGroup>
-            
+          </Col>
+        </Row>
+        {(hook.spinner.loading === true) ? <Spinner animation="border" className="mt-3" role="status">
+          <span className="sr-only">Ladataan...</span>
+          </Spinner> :
+          <Row>
             {hook.data.infot.map((info, idx) => {
               return (
-                <Card key={idx} style={{ width: '18rem'}}>
-                  <Card.Body>
-                    <Card.Title>{info.name}</Card.Title>
-                    <Card.Text>
-                      Linkki: <a href={info.link}>{info.link}</a>
-                    </Card.Text>
-                    <Card.Text>
-                      Nimi: {info.name}
-                    </Card.Text>
-                    <Card.Text>
-                      Hinta: {info.price}€
-                    </Card.Text>
-                  </Card.Body>
-                  <Button variant="primary">Täydet tiedot</Button>
-                </Card>
-                )
-              })}
-
-            </ListGroup>}
-            </ProductProvider>
-            
-            </Container>
+              <Col lg={4} md={12} key={idx}>
+                <Product info={info} /> 
+              </Col>
+              )
+            })}
+          </Row>
+        }
+      </ProductProvider>
+    </Container>
         )
 }
 

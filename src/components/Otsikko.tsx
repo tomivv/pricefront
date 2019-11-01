@@ -6,7 +6,7 @@ interface Props {
 
 const Otsikko : React.FC<Props> = (props : Props) => {
     return (
-        <h2>
+        <h2 style={{textAlign: 'center'}}>
 
             {props.teksti}
             

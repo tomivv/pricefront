@@ -28,7 +28,7 @@ const Tuotelista : React.FC<Props> = (props : Props) => {
 
     return (
       <>
-        <Card style={{ width: '40rem' }}>
+        <Card>
           <Form onSubmit={handleSubmit}>
             <Card.Body>
               <Card.Title>Etsi tuote</Card.Title>

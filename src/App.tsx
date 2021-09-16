@@ -31,7 +31,7 @@ function useData() {
   
   async function haeTiedot(SearchTerm: any) {
     setSpinner({loading : true});
-    let res = await fetch(`http://${process.env.REACT_APP_API_URL}/api/product/${SearchTerm}`);
+    let res = await fetch(`https://${process.env.REACT_APP_API_URL}/api/product/${SearchTerm}`);
     let infot = await res.json();
     console.log(infot)
     if (infot.failed) {
